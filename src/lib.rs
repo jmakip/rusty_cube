@@ -1,20 +1,20 @@
 #[derive(Clone,Copy)]
-struct Edge {
+pub struct Edge {
     id: u32,
     orient: i8,
 }
 #[derive(Clone,Copy)]
-struct Corner{
+pub struct Corner{
     id: u32,
     orient: i8,
 }
 #[derive(Clone,Copy)]
-struct Cube {
+pub struct Cube {
     edges: [Edge; 12],
     corners: [Corner; 8],
 }
 
-fn solved_cube() -> Cube 
+pub fn solved_cube() -> Cube 
 {
     Cube {
         edges : [
@@ -47,7 +47,7 @@ fn solved_cube() -> Cube
     }
 }
 
-fn print_cubies(cube: Cube) {
+pub fn print_cubies(cube: Cube) {
     let mut pos = String::from("");
     for e in cube.edges.iter() {
         match e.orient {
@@ -108,6 +108,7 @@ fn corner_plus(mut corner: Corner) -> Corner {
     }
     return corner;
 }
+
 fn corner_minus(mut corner: Corner) -> Corner {
     if corner.orient > -1 {
         corner.orient -= 1;
@@ -126,7 +127,7 @@ fn edge_flip(mut edge: Edge) -> Edge {
 }
 
 
-fn rotate_u( cube: Cube) -> Cube 
+pub fn rotate_u( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[0] = cube.edges[1];
@@ -141,7 +142,7 @@ fn rotate_u( cube: Cube) -> Cube
     return cube_trans;
 }
 
-fn rotate_ui( cube: Cube) -> Cube 
+pub fn rotate_ui( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[0] = cube.edges[3];
@@ -156,7 +157,7 @@ fn rotate_ui( cube: Cube) -> Cube
     return cube_trans;
 }
 
-fn rotate_r( cube: Cube) -> Cube 
+pub fn rotate_r( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[1] = cube.edges[8];
@@ -171,7 +172,7 @@ fn rotate_r( cube: Cube) -> Cube
     return cube_trans;
 }
 
-fn rotate_ri( cube: Cube) -> Cube 
+pub fn rotate_ri( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[8] = cube.edges[1];
@@ -185,7 +186,7 @@ fn rotate_ri( cube: Cube) -> Cube
     cube_trans.corners[7] = corner_minus(cube.corners[4]);
     return cube_trans;
 }
-fn rotate_f( cube: Cube) -> Cube 
+pub fn rotate_f( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[0] = edge_flip(cube.edges[9]);
@@ -199,7 +200,7 @@ fn rotate_f( cube: Cube) -> Cube
     cube_trans.corners[0] = corner_plus(cube.corners[3]);
     return cube_trans;
 }
-fn rotate_fi( cube: Cube) -> Cube 
+pub fn rotate_fi( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[9] = edge_flip(cube.edges[0]);
@@ -214,7 +215,7 @@ fn rotate_fi( cube: Cube) -> Cube
     return cube_trans;
 }
 
-fn rotate_b( cube: Cube) -> Cube 
+pub fn rotate_b( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[11] = edge_flip(cube.edges[2]);
@@ -229,7 +230,7 @@ fn rotate_b( cube: Cube) -> Cube
     return cube_trans;
 }
 
-fn rotate_bi( cube: Cube) -> Cube 
+pub fn rotate_bi( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[2] = edge_flip(cube.edges[11]);
@@ -244,7 +245,7 @@ fn rotate_bi( cube: Cube) -> Cube
     return cube_trans;
 }
 
-fn rotate_l( cube: Cube) -> Cube 
+pub fn rotate_l( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[9] = cube.edges[3];
@@ -259,7 +260,7 @@ fn rotate_l( cube: Cube) -> Cube
     return cube_trans;
 }
 
-fn rotate_li( cube: Cube) -> Cube 
+pub fn rotate_li( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
 
@@ -275,7 +276,7 @@ fn rotate_li( cube: Cube) -> Cube
     return cube_trans;
 }
 
-fn rotate_d( cube: Cube) -> Cube 
+pub fn rotate_d( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
     cube_trans.edges[5] = cube.edges[4];
@@ -290,7 +291,7 @@ fn rotate_d( cube: Cube) -> Cube
     return cube_trans;
 }
 
-fn rotate_di( cube: Cube) -> Cube 
+pub fn rotate_di( cube: Cube) -> Cube 
 {
     let mut cube_trans = cube.clone();
 
@@ -304,14 +305,4 @@ fn rotate_di( cube: Cube) -> Cube
     cube_trans.corners[6] = cube.corners[5];
     cube_trans.corners[5] = cube.corners[4];
     return cube_trans;
-}
-
-fn main() {
-    let mut cube = solved_cube();
-    print_cubies(cube);
-    println!("solved");
-    let mut cube_trans = rotate_d(cube);
-    print_cubies(cube_trans);
-    cube_trans = rotate_di(cube_trans);
-    print_cubies(cube_trans);
 }
