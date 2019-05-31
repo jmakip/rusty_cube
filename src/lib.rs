@@ -46,8 +46,7 @@ pub fn solved_cube() -> Cube
         ],
     }
 }
-
-pub fn print_cubies(cube: Cube) {
+pub fn pos_as_string(cube: Cube) -> String {
     let mut pos = String::from("");
     for e in cube.edges.iter() {
         match e.orient {
@@ -83,7 +82,6 @@ pub fn print_cubies(cube: Cube) {
             _ => pos.push_str("!"),
         }
         match e.id {
-//UFR	URB	UBL	ULF	DRF	DFL	DLB	DBR
            1 => pos.push_str("UFR"),
            2 => pos.push_str("URB"),
            3 => pos.push_str("UBL"),
@@ -97,6 +95,12 @@ pub fn print_cubies(cube: Cube) {
        }
        pos.push_str(" ");
     }
+
+    return pos;
+}
+
+pub fn print_cubies(cube: Cube) {
+    let pos = pos_as_string(cube);
     println!("{}",pos);
 }
 
@@ -306,3 +310,105 @@ pub fn rotate_di( cube: Cube) -> Cube
     cube_trans.corners[5] = cube.corners[4];
     return cube_trans;
 }
+
+#[cfg(test)] 
+mod tests {
+    use super::*;
+    #[test]
+    fn rotation_up() {
+        let u = "UR UB UL UF DF DR DB DL FR FL BR BL URB UBL ULF UFR DRF DFL DLB DBR ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_u(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_up_inv() {
+        let u = "UL UF UR UB DF DR DB DL FR FL BR BL ULF UFR URB UBL DRF DFL DLB DBR ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_ui(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_down() {
+        let u = "UF UR UB UL DL DF DR DB FR FL BR BL UFR URB UBL ULF DFL DLB DBR DRF ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_d(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_down_inv() {
+        let u = "UF UR UB UL DR DB DL DF FR FL BR BL UFR URB UBL ULF DBR DRF DFL DLB ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_di(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_right() {
+        let u = "UF FR UB UL DF BR DB DL DR FL UR BL -DRF +UFR UBL ULF +DBR DFL DLB -URB ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_r(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_right_inv() {
+        let u = "UF BR UB UL DF FR DB DL UR FL DR BL -URB +DBR UBL ULF +UFR DFL DLB -DRF ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_ri(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_left() {
+        let u = "UF UR UB BL DF DR DB FL FR UL BR DL UFR URB -DLB +UBL DRF -ULF +DFL DBR ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_l(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_left_inv() {
+        let u = "UF UR UB FL DF DR DB BL FR DL BR UL UFR URB -ULF +DFL DRF -DLB +UBL DBR ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_li(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_back() {
+        let u = "UF UR -BR UL DF DR -BL DL FR FL -DB -UB UFR -DBR +URB ULF DRF DFL -UBL +DLB ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_b(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_back_inv() {
+        let u = "UF UR -BL UL DF DR -BR DL FR FL -UB -DB UFR -UBL +DLB ULF DRF DFL -DBR +URB ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_bi(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_front() {
+        let u = "-FL UR UB UL -FR DR DB DL -UF -DF BR BL +ULF URB UBL -DFL -UFR +DRF DLB DBR ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_f(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+    #[test]
+    fn rotation_front_inv() {
+        let u = "-FR UR UB UL -FL DR DB DL -DF -UF BR BL +DRF URB UBL -UFR -DFL +ULF DLB DBR ";
+        let cube = solved_cube();
+        let cube_rotated = rotate_fi(cube);
+        let pos = pos_as_string(cube_rotated);
+        assert_eq!(u, pos);
+    }
+}
+
