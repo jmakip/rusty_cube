@@ -11,7 +11,7 @@ fn main() {
     print!("U': ");
     cube_trans = rusty_cube::rotate_ui(cube);
     rusty_cube::print_cubies(cube_trans);
-    
+
     print!("R: ");
     cube_trans = rusty_cube::rotate_r(cube);
     rusty_cube::print_cubies(cube_trans);
@@ -39,7 +39,7 @@ fn main() {
     print!("F': ");
     cube_trans = rusty_cube::rotate_fi(cube);
     rusty_cube::print_cubies(cube_trans);
-    
+
     print!("B: ");
     cube_trans = rusty_cube::rotate_b(cube);
     rusty_cube::print_cubies(cube_trans);
