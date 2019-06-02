@@ -1,82 +1,39 @@
 extern crate rusty_cube;
 
-enum CubeTurn {
-    UP,
-    UP_I,
-    RIGHT,
-    RIGHT_I,
-    LEFT,
-    LEFT_I,
-    DOWN,
-    DOWN_I,
-    BACK,
-    BACK_I,
-}
 
-fn notation2turns(alg: &str) -> Vec<CubeTurn> {
-    let mut turn_list = Vec::new();
-    let turns = alg.split_whitespace();
-
-    for turn in turns {
-        match turn.trim() {
-            "U" => turn_list.push(CubeTurn::UP),
-            "U'" => turn_list.push(CubeTurn::UP_I),
-            "R" => turn_list.push(CubeTurn::RIGHT),
-            "R'" => turn_list.push(CubeTurn::RIGHT_I),
-            "L" => turn_list.push(CubeTurn::LEFT),
-            "L'" => turn_list.push(CubeTurn::LEFT_I),
-            "D" => turn_list.push(CubeTurn::DOWN),
-            "D'" => turn_list.push(CubeTurn::DOWN_I),
-            "B" => turn_list.push(CubeTurn::BACK),
-            "B'" => turn_list.push(CubeTurn::BACK_I),
-            _ => {}
-        }
-    }
-    return turn_list;
-}
 
 fn main() {
-    let alg = "R U' L' U R' U' L ";
+    let all = "R R' L L' U U' D D' B B' F' F";
+    let all_turns = rusty_cube::notation2turns(all);
+    let alg = "F U B2 L' B2 L2 D2 L' D' F2 U2 B' L2 D2 B' D2 L2 F L2 F";
     let cube = rusty_cube::solved_cube();
-    let mut cube_trans = cube;
     print!("zero: ");
     rusty_cube::print_cubies(cube);
 
-    //let turns = alg.split_whitespace();
-    /*
-    for turn in turns {
-        match turn.trim() {
-        "U" => cube_trans = rusty_cube::rotate_u(cube_trans),
-        "U'" => cube_trans = rusty_cube::rotate_ui(cube_trans),
-        "R" => cube_trans = rusty_cube::rotate_r(cube_trans),
-        "R'" => cube_trans = rusty_cube::rotate_ri(cube_trans),
-        "L" => cube_trans = rusty_cube::rotate_l(cube_trans),
-        "L'" => cube_trans = rusty_cube::rotate_li(cube_trans),
-        "D" => cube_trans = rusty_cube::rotate_d(cube_trans),
-        "D'" => cube_trans = rusty_cube::rotate_di(cube_trans),
-        "B" => cube_trans = rusty_cube::rotate_b(cube_trans),
-        "B'" => cube_trans = rusty_cube::rotate_bi(cube_trans),
-        _ => {},
-        }
-    }
-
-    */
-    let turns = notation2turns(alg);
-    for turn in turns.iter() {
-        match turn {
-            CubeTurn::UP => cube_trans = rusty_cube::rotate_u(cube_trans),
-            CubeTurn::UP_I => cube_trans = rusty_cube::rotate_ui(cube_trans),
-            CubeTurn::RIGHT => cube_trans = rusty_cube::rotate_r(cube_trans),
-            CubeTurn::RIGHT_I => cube_trans = rusty_cube::rotate_ri(cube_trans),
-            CubeTurn::LEFT => cube_trans = rusty_cube::rotate_l(cube_trans),
-            CubeTurn::LEFT_I => cube_trans = rusty_cube::rotate_li(cube_trans),
-            CubeTurn::DOWN => cube_trans = rusty_cube::rotate_d(cube_trans),
-            CubeTurn::DOWN_I => cube_trans = rusty_cube::rotate_di(cube_trans),
-            CubeTurn::BACK => cube_trans = rusty_cube::rotate_b(cube_trans),
-            CubeTurn::BACK_I => cube_trans = rusty_cube::rotate_bi(cube_trans),
-            _ => {}
-        }
-    }
+    let turns = rusty_cube::notation2turns(alg);
+    let cube_trans = rusty_cube::apply_turns(cube, turns);
     print!("alg: ");
     rusty_cube::print_cubies(cube_trans);
+
+
+    let distance = rusty_cube::distance_g0(cube_trans);
+
+    println!("G0 distance: {} ", distance);
+
+    let mut max_iter : u16 = 15;
+    let start : rusty_cube::SolveState = rusty_cube::SolveState {
+        dist : 20,
+        alg: Vec::new(),
+        state: cube_trans,
+        valid_turns: all_turns,
+    };
+    let mut state = vec![start];
+    let mut solved = rusty_cube::solve_g0(  max_iter ,state);
+
+    for states in solved.iter() {
+        println!("distance : {}", states.dist);
+        let mut turnee= states.alg.to_vec();
+        rusty_cube::print_turns(turnee);
+
+    }
 }
