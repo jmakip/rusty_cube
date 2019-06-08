@@ -576,6 +576,237 @@ pub fn corners_distance_g0( cube: Cube ) -> u32
     }
     return distance;
 }
+pub fn edges_distance_g2( cube: Cube ) -> u32
+{
+      //UF UR UB   UL  DF  DR DB DL FR FL BR BL 
+    let edge_lookup : [u32; 144] = [ 
+        0, 1,  0,  1,  0,  1, 0, 1, 2, 2, 2, 2, //UF
+
+        1, 0,  1,  0,  1,  0, 1, 0, 2, 2, 2, 2, //UR
+
+        0, 1,  0,  1,  0,  1, 0, 1, 2, 2, 2, 2, //UB
+
+        1, 0,  1,  0,  1,  0, 1, 0, 2, 2, 2, 2, //UL
+
+        0, 1,  0,  1,  0,  1, 0, 1, 2, 2, 2, 2, //DF
+
+        1, 0,  1,  0,  1,  0, 1, 0, 2, 2, 2, 2, //DR
+
+        0, 1,  0,  1,  0,  1, 0, 1, 2, 2, 2, 2, //DB
+
+        1, 0,  1,  0,  1,  0, 1, 0, 2, 2, 2, 2, //DL
+
+        2, 2,  2,  2,  2,  2, 2, 2, 0, 0, 0, 0, //FR
+
+        2, 2,  2,  2,  2,  2, 2, 2, 0, 0, 0, 0, //FL
+
+        2, 2,  2,  2,  2,  2, 2, 2, 0, 0, 0, 0, //BR
+
+        2, 2,  2,  2,  2,  2, 2, 2, 0, 0, 0, 0, //BL
+        ];
+    let mut distance : u32 = 0;
+    let mut lookup_index : u16 = 0;
+    for e in cube.edges.iter() {
+        if e.id > 0 {
+            let mut offset : usize = e.id.into();
+            offset -= 1;
+            offset *= 12;
+            offset += usize::from(lookup_index);
+            distance += edge_lookup[offset];
+        }
+        lookup_index += 1;
+    }
+    return distance;
+}
+pub fn corners_distance_g2( cube: Cube ) -> u32
+{
+    let corner_lookup : [u32; 64] = [ 
+        0, 1,  0,  1,  1,  0, 1, 0,  //UFR
+
+        1, 0,  1,  0,  0,  1, 0, 1,  //URB
+
+        0, 1,  0,  1,  1,  0, 1, 0,  //UBL
+
+        1, 0,  1,  0,  0,  1, 0, 1,  //ULF
+
+        1, 0,  1,  0,  0,  1, 0, 1,  //DRF
+
+        0, 1,  0,  1,  1,  0, 1, 0,  //DFL
+
+        1, 0,  1,  0,  0,  1, 0, 1,  //DLB
+
+        0, 1,  0,  1,  1,  0, 1, 0,  //DBR
+        ];
+    let mut distance : u32 = 0;
+    let mut lookup_index : u16 = 0;
+    for e in cube.corners.iter() {
+        if e.id > 0 {
+            let mut offset : usize = e.id.into();
+            offset -= 1;
+            offset *= 8;
+            offset += usize::from(lookup_index);
+            distance += corner_lookup[offset];
+        }
+        lookup_index += 1;
+    }
+    return distance;
+}
+pub fn edges_distance_g3( cube: Cube ) -> u32
+{
+      //UF UR UB   UL  DF  DR DB DL FR FL BR BL 
+    let edge_lookup : [u32; 144] = [ 
+        0, 0,  0,  0,  1,  2, 2, 2, 2, 2, 2, 2, //UF
+
+        0, 0,  0,  0,  2,  1, 2, 2, 1, 2, 1, 2, //UR
+
+        0, 0,  0,  0,  2,  2, 1, 2, 2, 2, 2, 2, //UB
+
+        0, 0,  0,  0,  2,  2, 2, 1, 2, 1, 2, 1, //UL
+
+        1, 2,  2,  2,  0,  0, 0, 0, 2, 2, 2, 2, //DF
+
+        2, 1,  2,  2,  0,  0, 0, 0, 1, 2, 1, 2, //DR
+
+        2, 2,  1,  2,  0,  0, 0, 0, 2, 2, 2, 2, //DB
+
+        2, 2,  2,  1,  0,  0, 0, 0, 2, 1, 2, 1, //DL
+
+        2, 1,  2,  2,  2,  1, 2, 2, 0, 1, 0, 1, //FR
+
+        2, 2,  2,  1,  2,  2, 2, 1, 1, 0, 1, 0, //FL
+
+        2, 1,  2,  2,  2,  1, 2, 2, 0, 1, 0, 1, //BR
+
+        2, 2,  2,  1,  2,  2, 2, 1, 1, 0, 1, 0, //BL
+        ];
+    let mut distance : u32 = 0;
+    let mut lookup_index : u16 = 0;
+    for e in cube.edges.iter() {
+        if e.id > 0 {
+            let mut offset : usize = e.id.into();
+            offset -= 1;
+            offset *= 12;
+            offset += usize::from(lookup_index);
+            distance += edge_lookup[offset];
+        }
+        lookup_index += 1;
+    }
+    return distance;
+}
+pub fn corners_distance_g3( cube: Cube ) -> u32
+{
+    let corner_lookup : [u32; 64] = [ 
+        0, 0,  0,  0,  2,  1, 2, 1,  //UFR
+
+        0, 0,  0,  0,  1,  2, 1, 2,  //URB
+
+        0, 0,  0,  0,  2,  1, 2, 1,  //UBL
+
+        0, 0,  0,  0,  1,  2, 1, 2,  //ULF
+
+        2, 1,  2,  1,  0,  0, 0, 0,  //DRF
+
+        1, 2,  1,  2,  0,  0, 0, 0,  //DFL
+
+        2, 1,  2,  1,  0,  0, 0, 0,  //DLB
+
+        1, 2,  1,  2,  0,  0, 0, 0,  //DBR
+        ];
+    let mut distance : u32 = 0;
+    let mut lookup_index : u16 = 0;
+    for e in cube.corners.iter() {
+        if e.id > 0 {
+            let mut offset : usize = e.id.into();
+            offset -= 1;
+            offset *= 8;
+            offset += usize::from(lookup_index);
+            distance += corner_lookup[offset];
+        }
+        lookup_index += 1;
+    }
+    return distance;
+}
+pub fn edges_distance_g4( cube: Cube ) -> u32
+{
+      //UF UR UB   UL  DF  DR DB DL FR FL BR BL 
+    let edge_lookup : [u32; 144] = [ 
+        0, 1,  1,  1,  1,  2, 2, 2, 2, 2, 2, 2, //UF
+
+        1, 0,  1,  1,  2,  1, 2, 2, 1, 2, 1, 2, //UR
+
+        1, 1,  0,  1,  2,  2, 1, 2, 2, 2, 2, 2, //UB
+
+        1, 1,  1,  0,  2,  2, 2, 1, 2, 1, 2, 1, //UL
+
+        1, 2,  2,  2,  0,  1, 1, 1, 2, 2, 2, 2, //DF
+
+        2, 1,  2,  2,  1,  0, 1, 1, 1, 2, 1, 2, //DR
+
+        2, 2,  1,  2,  1,  1, 0, 1, 2, 2, 2, 2, //DB
+
+        2, 2,  2,  1,  1,  1, 1, 0, 2, 1, 2, 1, //DL
+
+        2, 1,  2,  2,  2,  1, 2, 2, 0, 1, 1, 2, //FR
+
+        2, 2,  2,  1,  2,  2, 2, 1, 1, 0, 2, 1, //FL
+
+        2, 1,  2,  2,  2,  1, 2, 2, 1, 2, 0, 1, //BR
+
+        2, 2,  2,  1,  2,  2, 2, 1, 2, 1, 1, 0, //BL
+        ];
+    let mut distance : u32 = 0;
+    let mut lookup_index : u16 = 0;
+    for e in cube.edges.iter() {
+        if e.id > 0 {
+            let mut offset : usize = e.id.into();
+            offset -= 1;
+            offset *= 12;
+            offset += usize::from(lookup_index);
+            if edge_lookup[offset] > 0 {
+                distance += 1;
+            }
+            //distance += edge_lookup[offset];
+        }
+        lookup_index += 1;
+    }
+    return distance;
+}
+pub fn corners_distance_g4( cube: Cube ) -> u32
+{
+    let corner_lookup : [u32; 64] = [ 
+        0, 1,  1,  1,  2,  1, 2, 1,  //UFR
+
+        1, 0,  1,  1,  1,  2, 1, 2,  //URB
+
+        1, 1,  0,  1,  2,  1, 2, 1,  //UBL
+
+        1, 1,  1,  0,  1,  2, 1, 2,  //ULF
+
+        2, 1,  2,  1,  0,  1, 1, 1,  //DRF
+
+        1, 2,  1,  2,  1,  0, 1, 1,  //DFL
+
+        2, 1,  2,  1,  1,  1, 0, 1,  //DLB
+
+        1, 2,  1,  2,  1,  1, 1, 0,  //DBR
+        ];
+    let mut distance : u32 = 0;
+    let mut lookup_index : u16 = 0;
+    for e in cube.corners.iter() {
+        if e.id > 0 {
+            let mut offset : usize = e.id.into();
+            offset -= 1;
+            offset *= 8;
+            offset += usize::from(lookup_index);
+            //distance += corner_lookup[offset];
+            if corner_lookup[offset] > 0{
+                distance += 1;
+            }
+        }
+        lookup_index += 1;
+    }
+    return distance;
+}
 //this is my simple heuristic function for solving G1 state
 //trying to estimate
 pub fn distance_g0( cube: Cube ) -> u32
@@ -587,6 +818,20 @@ pub fn distance_g1( cube: Cube ) -> u32
 {
     return edges_distance_g0(cube) + corners_distance_g0(cube);
 }
+
+pub fn distance_g2( cube: Cube ) -> u32
+{
+    return edges_distance_g2(cube) + corners_distance_g2(cube);
+}
+pub fn distance_g3( cube: Cube ) -> u32
+{ 
+    return edges_distance_g3(cube) + corners_distance_g3(cube);
+}
+pub fn distance_g4( cube: Cube ) -> u32
+{
+    return edges_distance_g4(cube) + corners_distance_g4(cube);
+}
+
 
 
 //## Pseudo
@@ -698,9 +943,9 @@ pub fn apply_valid_turns_g1( state: SolveState) -> Vec<SolveState>
         match turn {
             CubeTurn::Up | CubeTurn::UpI | CubeTurn::Up2 => {
                 next_turns = vec![CubeTurn::Right, CubeTurn::RightI, 
-                    CubeTurn::Left, CubeTurn::LeftI, 
-                    CubeTurn::Back2,
-                    CubeTurn::Front2 ];
+                    CubeTurn::Left, CubeTurn::LeftI ];//, 
+                    //CubeTurn::Back2,
+                   // CubeTurn::Front2 ];
                 if state.valid_turns.contains(&CubeTurn::Down) {
                     next_turns.push(CubeTurn::Down);
                     next_turns.push(CubeTurn::DownI);
@@ -708,9 +953,9 @@ pub fn apply_valid_turns_g1( state: SolveState) -> Vec<SolveState>
             }
             CubeTurn::Down | CubeTurn::DownI | CubeTurn::Down2 => {
                 next_turns = vec![CubeTurn::Right, CubeTurn::RightI, 
-                    CubeTurn::Left, CubeTurn::LeftI, 
-                    CubeTurn::Back2,
-                    CubeTurn::Front2 ];
+                    CubeTurn::Left, CubeTurn::LeftI];//, 
+                    //CubeTurn::Back2,
+                    //CubeTurn::Front2 ];
                 if state.valid_turns.contains(&CubeTurn::Up) {
                     next_turns.push(CubeTurn::Up);
                     next_turns.push(CubeTurn::UpI);
@@ -718,9 +963,9 @@ pub fn apply_valid_turns_g1( state: SolveState) -> Vec<SolveState>
             }
             CubeTurn::Right | CubeTurn::RightI | CubeTurn::Right2 => {
                 next_turns = vec![CubeTurn::Up, CubeTurn::UpI, 
-                    CubeTurn::Down, CubeTurn::DownI, 
-                    CubeTurn::Back2,
-                    CubeTurn::Front2 ];
+                    CubeTurn::Down, CubeTurn::DownI];//, 
+                    //CubeTurn::Back2,
+                   // CubeTurn::Front2 ];
                 if state.valid_turns.contains(&CubeTurn::Left) {
                     next_turns.push(CubeTurn::Left);
                     next_turns.push(CubeTurn::LeftI);
@@ -728,9 +973,9 @@ pub fn apply_valid_turns_g1( state: SolveState) -> Vec<SolveState>
             }
             CubeTurn::Left | CubeTurn::LeftI | CubeTurn::Left2 => {
                 next_turns = vec![CubeTurn::Up, CubeTurn::UpI, 
-                    CubeTurn::Down, CubeTurn::DownI, 
-                    CubeTurn::Back2, 
-                    CubeTurn::Front2 ];
+                    CubeTurn::Down, CubeTurn::DownI];//, 
+                    //CubeTurn::Back2, 
+                   // CubeTurn::Front2 ];
                 if state.valid_turns.contains(&CubeTurn::Right) {
                     next_turns.push(CubeTurn::Right);
                     next_turns.push(CubeTurn::RightI);
@@ -741,18 +986,256 @@ pub fn apply_valid_turns_g1( state: SolveState) -> Vec<SolveState>
                     CubeTurn::Down, CubeTurn::DownI, 
                     CubeTurn::Right, CubeTurn::RightI, 
                     CubeTurn::Left, CubeTurn::LeftI ];
-                if state.valid_turns.contains(&CubeTurn::Front2) {
-                    next_turns.push(CubeTurn::Front2);
-                }
+              //  if state.valid_turns.contains(&CubeTurn::Front2) {
+              //      next_turns.push(CubeTurn::Front2);
+              //  }
             }
             CubeTurn::Front | CubeTurn::FrontI | CubeTurn::Front2 => {
                 next_turns = vec![CubeTurn::Up, CubeTurn::UpI, 
                     CubeTurn::Down, CubeTurn::DownI, 
                     CubeTurn::Right, CubeTurn::RightI, 
                     CubeTurn::Left, CubeTurn::LeftI ];
+              //  if state.valid_turns.contains(&CubeTurn::Back2) {
+              //      next_turns.push(CubeTurn::Back2);
+              //  }
+            }
+        }
+        let state_n = SolveState {
+                dist: distance,
+                alg: alg_n,
+                state: cube_trans,
+                valid_turns: next_turns,
+        };
+        new_states.push(state_n);
+    }
+    return new_states;
+
+}
+
+pub fn apply_valid_turns_g2( state: SolveState) -> Vec<SolveState> 
+{
+    let mut new_states : Vec<SolveState> = Vec::new();
+    for turn in state.valid_turns.iter() {
+        let mut t : CubeTurn = turn.clone();
+        match turn {
+            CubeTurn::Up2 | CubeTurn::Down2 | CubeTurn::Right2  => {},
+            CubeTurn::Left2 | CubeTurn::Front2 | CubeTurn::Back2 => {},
+            CubeTurn::Down | CubeTurn::DownI| CubeTurn::Up => {},
+            CubeTurn::UpI => {},
+            _ => t = CubeTurn::Up2
+        }
+        let cube_trans = apply_turn(state.state, t);
+        let distance = distance_g2(cube_trans);
+        let mut next_turns : Vec<CubeTurn> = Vec::new();
+        let mut alg_n : Vec<CubeTurn> = Vec::new();
+        alg_n = state.alg.to_vec();
+        alg_n.push(*turn);
+        //this looks horrible.. clean up!
+        match turn {
+            CubeTurn::Up | CubeTurn::UpI | CubeTurn::Up2 => {
+                next_turns = vec![CubeTurn::Right2, CubeTurn::Front2, 
+                    CubeTurn::Left2, CubeTurn::Back2 ];//, 
+                if state.valid_turns.contains(&CubeTurn::Down) {
+                    next_turns.push(CubeTurn::Down);
+                    next_turns.push(CubeTurn::DownI);
+                    next_turns.push(CubeTurn::Down2);
+                }
+            }
+            CubeTurn::Down | CubeTurn::DownI | CubeTurn::Down2 => {
+                next_turns = vec![CubeTurn::Right2, CubeTurn::Front2, 
+                    CubeTurn::Left2, CubeTurn::Back2 ];//, 
+                if state.valid_turns.contains(&CubeTurn::Up) {
+                    next_turns.push(CubeTurn::Up);
+                    next_turns.push(CubeTurn::UpI);
+                    next_turns.push(CubeTurn::Up2);
+                }
+            }
+            CubeTurn::Right | CubeTurn::RightI | CubeTurn::Right2 => {
+                next_turns = vec![CubeTurn::Up, CubeTurn::UpI, CubeTurn::Up2, 
+                    CubeTurn::Down, CubeTurn::DownI, CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Front2);
+                    next_turns.push(CubeTurn::Back2);
+                if state.valid_turns.contains(&CubeTurn::Left2) {
+                    next_turns.push(CubeTurn::Left2);
+                }
+            }
+            CubeTurn::Left | CubeTurn::LeftI | CubeTurn::Left2 => {
+                next_turns = vec![CubeTurn::Up, CubeTurn::UpI, CubeTurn::Up2, 
+                    CubeTurn::Down, CubeTurn::DownI, CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Front2);
+                    next_turns.push(CubeTurn::Back2);
+                if state.valid_turns.contains(&CubeTurn::Right2) {
+                    next_turns.push(CubeTurn::Right2);
+                }
+            }
+            CubeTurn::Back | CubeTurn::BackI | CubeTurn::Back2 => {
+                next_turns = vec![CubeTurn::Up, CubeTurn::UpI, CubeTurn::Up2, 
+                    CubeTurn::Down, CubeTurn::DownI, CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Right2);
+                    next_turns.push(CubeTurn::Left2);
+                if state.valid_turns.contains(&CubeTurn::Front2) {
+                    next_turns.push(CubeTurn::Front2);
+                }
+            }
+            CubeTurn::Front | CubeTurn::FrontI | CubeTurn::Front2 => {
+                next_turns = vec![CubeTurn::Up, CubeTurn::UpI, CubeTurn::Up2, 
+                    CubeTurn::Down, CubeTurn::DownI, CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Right2);
+                    next_turns.push(CubeTurn::Left2);
                 if state.valid_turns.contains(&CubeTurn::Back2) {
                     next_turns.push(CubeTurn::Back2);
                 }
+            }
+        }
+        let state_n = SolveState {
+                dist: distance,
+                alg: alg_n,
+                state: cube_trans,
+                valid_turns: next_turns,
+        };
+        new_states.push(state_n);
+    }
+    return new_states;
+
+}
+
+pub fn apply_valid_turns_g3( state: SolveState) -> Vec<SolveState> 
+{
+    let mut new_states : Vec<SolveState> = Vec::new();
+    for turn in state.valid_turns.iter() {
+        let mut t : CubeTurn = turn.clone();
+        match turn {
+            CubeTurn::Up2 | CubeTurn::Down2 | CubeTurn::Right2  => {},
+            CubeTurn::Left2 | CubeTurn::Front2 | CubeTurn::Back2 => {},
+            _ => t = CubeTurn::Up2
+        }
+        let cube_trans = apply_turn(state.state, t);
+        let distance = distance_g3(cube_trans);
+        let mut next_turns : Vec<CubeTurn> = Vec::new();
+        let mut alg_n : Vec<CubeTurn> = Vec::new();
+        alg_n = state.alg.to_vec();
+        alg_n.push(*turn);
+        //this looks horrible.. clean up!
+        match turn {
+            CubeTurn::Up | CubeTurn::UpI | CubeTurn::Up2 => {
+                next_turns = vec![CubeTurn::Right2, CubeTurn::Front2, 
+                    CubeTurn::Left2, CubeTurn::Back2 ];//, 
+                if state.valid_turns.contains(&CubeTurn::Down2) {
+                    next_turns.push(CubeTurn::Down2);
+                }
+            }
+            CubeTurn::Down | CubeTurn::DownI | CubeTurn::Down2 => {
+                next_turns = vec![CubeTurn::Right2, CubeTurn::Front2, 
+                    CubeTurn::Left2, CubeTurn::Back2 ];//, 
+                if state.valid_turns.contains(&CubeTurn::Up) {
+                    next_turns.push(CubeTurn::Up2);
+                }
+            }
+            CubeTurn::Right | CubeTurn::RightI | CubeTurn::Right2 => {
+                next_turns = vec![CubeTurn::Up2, 
+                     CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Front2);
+                    next_turns.push(CubeTurn::Back2);
+                if state.valid_turns.contains(&CubeTurn::Left2) {
+                    next_turns.push(CubeTurn::Left2);
+                }
+            }
+            CubeTurn::Left | CubeTurn::LeftI | CubeTurn::Left2 => {
+                next_turns = vec![CubeTurn::Up2, 
+                    CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Front2);
+                    next_turns.push(CubeTurn::Back2);
+                if state.valid_turns.contains(&CubeTurn::Right2) {
+                    next_turns.push(CubeTurn::Right2);
+                }
+            }
+            CubeTurn::Back | CubeTurn::BackI | CubeTurn::Back2 => {
+                next_turns = vec![ CubeTurn::Up2, 
+                     CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Right2);
+                    next_turns.push(CubeTurn::Left2);
+                if state.valid_turns.contains(&CubeTurn::Front2) {
+                    next_turns.push(CubeTurn::Front2);
+                }
+            }
+            CubeTurn::Front | CubeTurn::FrontI | CubeTurn::Front2 => {
+                next_turns = vec![CubeTurn::Up2, 
+                     CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Right2);
+                    next_turns.push(CubeTurn::Left2);
+                if state.valid_turns.contains(&CubeTurn::Back2) {
+                    next_turns.push(CubeTurn::Back2);
+                }
+            }
+        }
+        let state_n = SolveState {
+                dist: distance,
+                alg: alg_n,
+                state: cube_trans,
+                valid_turns: next_turns,
+        };
+        new_states.push(state_n);
+    }
+    return new_states;
+
+}
+pub fn apply_valid_turns_g4( state: SolveState) -> Vec<SolveState> 
+{
+    let mut new_states : Vec<SolveState> = Vec::new();
+    for turn in state.valid_turns.iter() {
+        let mut t : CubeTurn = turn.clone();
+        match turn {
+            CubeTurn::Up2 | CubeTurn::Down2 | CubeTurn::Right2  => {},
+            CubeTurn::Left2  => {},
+            _ => t = CubeTurn::Up2
+        }
+        let cube_trans = apply_turn(state.state, t);
+        let distance = distance_g4(cube_trans);
+        let mut next_turns : Vec<CubeTurn> = Vec::new();
+        let mut alg_n : Vec<CubeTurn> = Vec::new();
+        alg_n = state.alg.to_vec();
+        alg_n.push(*turn);
+        //this looks horrible.. clean up!
+        match turn {
+            CubeTurn::Up | CubeTurn::UpI | CubeTurn::Up2 => {
+                next_turns = vec![CubeTurn::Right2,
+                    CubeTurn::Left2 ];//, 
+                if state.valid_turns.contains(&CubeTurn::Down2) {
+                    next_turns.push(CubeTurn::Down2);
+                }
+            }
+            CubeTurn::Down | CubeTurn::DownI | CubeTurn::Down2 => {
+                next_turns = vec![CubeTurn::Right2,
+                    CubeTurn::Left2 ];//, 
+                if state.valid_turns.contains(&CubeTurn::Up) {
+                    next_turns.push(CubeTurn::Up2);
+                }
+            }
+            CubeTurn::Right | CubeTurn::RightI | CubeTurn::Right2 => {
+                next_turns = vec![CubeTurn::Up2, 
+                     CubeTurn::Down2]; 
+                if state.valid_turns.contains(&CubeTurn::Left2) {
+                    next_turns.push(CubeTurn::Left2);
+                }
+            }
+            CubeTurn::Left | CubeTurn::LeftI | CubeTurn::Left2 => {
+                next_turns = vec![CubeTurn::Up2, 
+                    CubeTurn::Down2]; 
+                if state.valid_turns.contains(&CubeTurn::Right2) {
+                    next_turns.push(CubeTurn::Right2);
+                }
+            }
+            CubeTurn::Back | CubeTurn::BackI | CubeTurn::Back2 => {
+                next_turns = vec![ CubeTurn::Up2, 
+                     CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Right2);
+                    next_turns.push(CubeTurn::Left2);
+            }
+            CubeTurn::Front | CubeTurn::FrontI | CubeTurn::Front2 => {
+                next_turns = vec![CubeTurn::Up2, 
+                     CubeTurn::Down2]; 
+                    next_turns.push(CubeTurn::Right2);
+                    next_turns.push(CubeTurn::Left2);
             }
         }
         let state_n = SolveState {
@@ -781,7 +1264,7 @@ pub fn solve_g0( mut max_iter : u16, mut state: Vec<SolveState>) -> Vec<SolveSta
         new_states.sort_by(|a,b| a.dist.cmp(&b.dist));
         state = new_states;
         iterations += 1;
-        if iterations % 4 == 0 {
+        if iterations % 5 == 0 {
             if state.len() > 1024{
                 state.split_off(1024);
             }
@@ -798,6 +1281,9 @@ pub fn solve_g0( mut max_iter : u16, mut state: Vec<SolveState>) -> Vec<SolveSta
         }
         index += 1;
     }
+    if index == 0 {
+        return state;
+    }
     state.split_off(index);
     iterations = 0;
     println!("found {} results", index);
@@ -812,8 +1298,118 @@ pub fn solve_g0( mut max_iter : u16, mut state: Vec<SolveState>) -> Vec<SolveSta
         }
         new_states.sort_by(|a,b| a.dist.cmp(&b.dist));
         state = new_states;
-        max_iter -= 1;
-        if max_iter % 4 == 0 {
+        if iterations % 5 == 0 {
+            if state.len() > 1024{
+                state.split_off(1024);
+            }
+        }
+        if state[0].dist == 0 {
+            break;
+        }
+        iterations += 1;
+    }
+    println!("cleaning up unsolved");
+    let mut index = 0;
+    for i in state.iter() {
+        if i.dist != 0 {
+            break;
+        }
+        index += 1;
+    }
+    if index == 0 {
+        return state;
+    }
+    state.split_off(index);
+    iterations = 0;
+    println!("found {} results", index);
+    println!("solving G2 state");
+    while iterations < max_iter {
+        println!("iterations {} ", iterations);
+        let mut new_states : Vec<SolveState> = Vec::new();
+        for branch in state.iter() {
+            let mut current = branch.clone();
+            let mut branch_step = apply_valid_turns_g2(current);
+            new_states.append(&mut branch_step);
+        }
+        new_states.sort_by(|a,b| a.dist.cmp(&b.dist));
+        state = new_states;
+        if iterations % 5 == 0 {
+            if state.len() > 1024{
+                state.split_off(1024);
+            }
+        }
+        if state[0].dist == 0 {
+            break;
+        }
+        iterations += 1;
+    }
+    println!("cleaning up unsolved");
+    let mut index = 0;
+    for i in state.iter() {
+        if i.dist != 0 {
+            break;
+        }
+        index += 1;
+    }
+    if index > 25 {
+        index = 25;
+    }
+    else if index == 0 {
+        return state;
+    }
+    state.split_off(index);
+    iterations = 0;
+    println!("found {} results", index);
+    println!("solving G3 state");
+    while iterations < max_iter{
+        println!("iterations {} ", iterations);
+        let mut new_states : Vec<SolveState> = Vec::new();
+        for branch in state.iter() {
+            let mut current = branch.clone();
+            let mut branch_step = apply_valid_turns_g3(current);
+            new_states.append(&mut branch_step);
+        }
+        new_states.sort_by(|a,b| a.dist.cmp(&b.dist));
+        state = new_states;
+        if iterations % 6 == 0 {
+            if state.len() > 1024{
+                state.split_off(1024);
+            }
+        }
+        if state[0].dist == 0 {
+            break;
+        }
+        iterations += 1;
+    }
+    println!("cleaning up unsolved");
+    let mut index = 0;
+    for i in state.iter() {
+        if i.dist != 0 {
+            break;
+        }
+        index += 1;
+    }
+    if index > 25 {
+        index = 25;
+    }
+    else if index == 0 {
+        return state;
+    }
+    state.split_off(index);
+    iterations = 0;
+    println!("found {} results", index);
+    println!("solving G4 state");
+    while iterations < max_iter{
+        println!("iterations {} ", iterations);
+        let mut new_states : Vec<SolveState> = Vec::new();
+        for branch in state.iter() {
+            let mut current = branch.clone();
+            let mut branch_step = apply_valid_turns_g4(current);
+            new_states.append(&mut branch_step);
+        }
+        new_states.sort_by(|a,b| a.dist.cmp(&b.dist));
+        state = new_states;
+        if iterations % 4 == 0 {
             if state.len() > 1024{
                 state.split_off(1024);
             }
